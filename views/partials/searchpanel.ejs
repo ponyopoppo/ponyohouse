@@ -1,0 +1,12 @@
+<form>
+  <div id="search-panel" class="input-group">
+    <input class="form-control" name="query" placeholder="例) 東京 賃貸 3LDK" type="text"
+    <% if (query) { %>
+      value="<%= query %>"
+    <% } %>
+    />
+    <span class="input-group-btn">
+      <button class="btn btn-secondary" type="submit">検索</button>
+    </span>
+  </div>
+</form>

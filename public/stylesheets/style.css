@@ -6,3 +6,33 @@ body {
 a {
   color: #00B7FF;
 }
+
+#search-panel {
+  padding: 20px;
+}
+
+.search-input {
+  height: 40px;
+}
+
+.result-address {
+  color: gray;
+}
+
+.result-title {
+
+}
+
+.result-text {
+
+}
+
+.result-url {
+  font-size: 9pt;
+}
+
+.result-board {
+  padding: 10px;
+  margin: 10px;
+  background-color: #eee;
+}

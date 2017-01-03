@@ -2,25 +2,16 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <% include ./partials/head %>
-</head>
+<head><% include ./partials/head %></head>
 <body class="container">
-
-    <header>
-        <% include ./partials/header %>
-    </header>
-
+    <header><% include ./partials/header %></header>
     <main>
-        <div class="jumbotron">
-            <h1>Ponyo house</h1>
-            <p>Welcome to Ponyo House</p>
-        </div>
+      <div class="jumbotron">
+        <h1>Ponyo house</h1>
+        <p>検索</p>
+        <% include ./partials/searchpanel %>      
+      </div>
     </main>
-
-    <footer>
-        <% include ./partials/footer %>
-    </footer>
-    
+    <footer><% include ./partials/footer %></footer>
 </body>
 </html>
