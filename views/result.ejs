@@ -14,14 +14,14 @@
       <div>
         <% for (let i = 0; i < results.length; i++) { %>
           <% const result = results[i] %>
-          <% if (result.TITLE == "") { continue; } %>
+          <% if (result.title == "") { continue; } %>
           <div class="result-board">
             <a rel="nofollow" href="<%= result.URL %>" target="_blank">
-              <p class="text-primary"><%= result.TITLE %></p>
+              <p class="text-primary"><%= result.title %></p>
             </a>
-            <p class="text-success"><%= result.URL %></p>
-            <p class="result-address"><%= result.ADDRESS %></p>
-            <p class="result-text"><%= result.TEXT %></p>
+            <p class="text-success"><%= result.url %></p>
+            <p class="result-address"><%= result.address %></p>
+            <p class="result-text"><%= result.description %></p>
           </div>
         <% } %>
       </div>

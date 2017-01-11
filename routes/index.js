@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const mongo = require('../mongo');
+const mysql = require('../tools/mysql');
 const collection = mongo.collection;
 const detail_collection = () => { return collection('detail'); }
 const $ = require('jquery');
@@ -43,6 +44,24 @@ const homepage = (req, res, next) => {
     page = 0;
   }
 
+  const attributes = [`title`, `url`, `layout`, `prefecture`, `city`, `address`, `description`, `createdAt`, `updatedAt`];
+  const where = {$or: {
+    prefecture: query,
+    city: query,
+  }};
+  mysql.findAll({attributes: attributes, where: where}, (error, response, body)=>{
+    const rooms = body.result;
+    console.log("findAll result:");
+    res.render('result', {
+      title: 'Ponyohouse',
+      results: rooms,
+      count: rooms.length,
+      query: query,
+      page: page,
+    });
+  });
+
+  /*
   const Detail = detail_collection();
   const cur = Detail.find();
   cur.count((err, count) => {
@@ -57,7 +76,7 @@ const homepage = (req, res, next) => {
       });
     });
   })
-
+  */
 };
 
 router.get('/', homepage);
