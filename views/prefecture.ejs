@@ -1,0 +1,28 @@
+<!-- views/prefecture.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head><% include ./partials/head %></head>
+<body class="container">
+  <header><% include ./partials/header %></header>
+  <main>
+    <h1><a href="/result/<%= prefecture %><%= result_suffix %>"><%= title %></a></h1>
+    <div class="row">
+      <h2>市区町村を選択</h2>
+      <% for (let i = 0; i < city_list.length; i++) { %>
+        <div class="col-md-2 col-sm-2 col-xs-4">
+          <% const city = city_list[i] %>
+          <p>
+            <a href="/result/<%= prefecture %>-<%= city %><%= result_suffix %>"><%= city %></a>
+          </p>
+        </div>
+      <% } %>
+      </div>
+    </div>
+    <div class="row">
+      <h2>最寄駅を選択</h2>
+    </div>
+  </main>
+  <footer><% include ./partials/footer %></footer>
+</body>
+</html>

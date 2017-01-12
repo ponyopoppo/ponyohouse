@@ -2,31 +2,32 @@
 
 const express = require('express');
 const router = express.Router();
-const mongo = require('../mongo');
 const mysql = require('../tools/mysql');
-const collection = mongo.collection;
 const detail_collection = () => { return collection('detail'); }
 const $ = require('jquery');
+const { prefecture_list, city_list, layout_list } = require('../tools/japan_data');
+const queryparser = require('../tools/queryparser');
 
 const NUM_PER_PAGE = 15;
-const MAX_TEXT_LENGTH = 400;
+const result_suffix = "の物件";
 
-const remove_tag = (str) => {
-  return str.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'');
-};
-
-const find_text = (str, query) => {
-  return remove_tag(str).slice(0, MAX_TEXT_LENGTH);
-};
-
-const trim = (results, query) => {
-  return results.map((result) => {
-    return {
-      TITLE: remove_tag(result.TITLE.join()),
-      ADDRESS: remove_tag(result.ADDRESS.join()).slice(0, 40),
-      URL: result.PAGE_URL,
-      TEXT: find_text(result.TEXT.join(), query),
-    };
+const search = (query, page, res) => {
+  if (page == null || page == undefined || page == "") {
+    page = 0;
+  }
+  const where = queryparser.getWhere(query);
+  const attributes = [`title`, `url`, `layout`, `address`,
+    `description`, `createdAt`, `updatedAt`];
+  mysql.findAll({attributes: attributes, where: where}, (error, response, body)=>{
+    const rooms = body.result;
+    console.log("findAll result:");
+    res.render('result', {
+      title: query + result_suffix,
+      results: rooms,
+      count: rooms.length,
+      query: query,
+      page: page,
+    });
   });
 };
 
@@ -34,52 +35,49 @@ const homepage = (req, res, next) => {
   const query = req.query.query;
   if (query == null || query == undefined || query == "") {
     res.render('index', {
-      title: 'Ponyohouse',
+      title: 'Ponyo House',
       query: false,
     });
     return;
   }
-  let page = req.query.page;
-  if (page == null || page == undefined || page == "") {
-    page = 0;
-  }
+  search(query, req.query.page, res);
+};
 
-  const attributes = [`title`, `url`, `layout`, `prefecture`, `city`, `address`, `description`, `createdAt`, `updatedAt`];
-  const where = {$or: {
-    prefecture: query,
-    city: query,
-  }};
-  mysql.findAll({attributes: attributes, where: where}, (error, response, body)=>{
-    const rooms = body.result;
-    console.log("findAll result:");
-    res.render('result', {
-      title: 'Ponyohouse',
-      results: rooms,
-      count: rooms.length,
-      query: query,
-      page: page,
-    });
+const showRooms = (req, res, next) => {
+  res.render('rooms', {
+    title: '部屋情報の閲覧',
+    result_suffix: result_suffix,
+    prefecture_list: prefecture_list,
   });
+};
 
-  /*
-  const Detail = detail_collection();
-  const cur = Detail.find();
-  cur.count((err, count) => {
-    cur.skip(page * NUM_PER_PAGE).limit(NUM_PER_PAGE).toArray((err, results) => {
-      const trimmed_results = trim(results, query);
-      res.render('result', {
-        title: 'Ponyohouse',
-        results: trimmed_results,
-        count: count,
-        query: query,
-        page: page,
-      });
-    });
-  })
-  */
+const showPrefecture = (req, res, next) => {
+  const prefecture = req.params.prefecture;
+  res.render('prefecture', {
+    title: prefecture + result_suffix,
+    result_suffix: result_suffix,
+    prefecture: prefecture,
+    city_list: city_list[prefecture],
+  });
+};
+
+const result = (req, res, next) => {
+  const q = req.query.query;
+  if (q != null && q != undefined && q != "") {
+    res.redirect('/?query=' + q);
+    return;
+  }
+  const query = req.params.query
+    .slice(0, req.params.query.length - result_suffix.length)
+    .replace("-", " ");
+
+  search(query, 0, res);
 };
 
 router.get('/', homepage);
 router.get('/index.html', homepage);
+router.get('/rooms', showRooms);
+router.get('/prefecture/:prefecture', showPrefecture);
+router.get('/result/:query', result);
 
 module.exports = router;
