@@ -3,27 +3,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><% include ./partials/head %></head>
-<body class="container">
+<body>
   <header><% include ./partials/header %></header>
   <main>
-    <h1><%= title %></h1>
-    <div class="row">
-      <h2>都道府県から検索</h2>
-      <% for (let i = 0; i < prefecture_list.length; i++) { %>
-        <div class="col-md-2 col-sm-2 col-xs-4">
-          <% const pref = prefecture_list[i] %>
-          <p>
-            <a href="/prefecture/<%= pref %>"><%=pref%></a>
-          </p>
-        </div>
-      <% } %>
+    <div class="container">
+      <h2><%= title %></h2>
+      <div class="row">
+        <h3>都道府県から検索</h3>
+        <% for (let i = 0; i < prefecture_list.length; i++) { %>
+          <div class="col-md-2 col-sm-2 col-xs-4">
+            <% const pref = prefecture_list[i] %>
+            <p>
+              <a href="/prefecture/<%= pref %>"><%=pref%></a>
+            </p>
+          </div>
+        <% } %>
+      </div>
+      <div>
+        <h3>キーワードから検索</h3>
+
       </div>
     </div>
-    <div>
-      <h2>キーワードから検索</h2>
-
-    </div>
-    </main>
-    <footer><% include ./partials/footer %></footer>
+  </main>
+  <footer><% include ./partials/footer %></footer>
 </body>
 </html>

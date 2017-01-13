@@ -3,24 +3,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><% include ./partials/head %></head>
-<body class="container">
+<body>
   <header><% include ./partials/header %></header>
   <main>
-    <h1><a href="/result/<%= prefecture %><%= result_suffix %>"><%= title %></a></h1>
-    <div class="row">
-      <h2>市区町村を選択</h2>
-      <% for (let i = 0; i < city_list.length; i++) { %>
-        <div class="col-md-2 col-sm-2 col-xs-4">
-          <% const city = city_list[i] %>
-          <p>
-            <a href="/result/<%= prefecture %>-<%= city %><%= result_suffix %>"><%= city %></a>
-          </p>
-        </div>
-      <% } %>
+    <div class="container">
+      <h2><a href="/result/<%= prefecture %><%= result_suffix %>"><%= title %></a></h2>
+      <div class="row">
+        <h3 class="col-md-12">市区町村を選択</h3>
+        <% for (let i = 0; i < city_list.length; i++) { %>
+          <div class="col-md-2 col-sm-2 col-xs-6">
+            <% const city = city_list[i] %>
+            <p>
+              <a href="/result/<%= prefecture %>-<%= city %><%= result_suffix %>"><%= city %> の物件</a>
+            </p>
+          </div>
+        <% } %>
       </div>
-    </div>
-    <div class="row">
-      <h2>最寄駅を選択</h2>
+      <div class="row">
+        <h3 class="col-md-12">最寄駅を選択</h3>
+        <% for (let i = 0; i < city_list.length; i++) { %>
+          <div class="col-md-2 col-sm-2 col-xs-6">
+            <% const city = city_list[i] %>
+            <p>
+              <a href="/result/<%= prefecture %>-<%= city %><%= result_suffix %>"><%= city %> の物件</a>
+            </p>
+          </div>
+        <% } %>
+      </div>
     </div>
   </main>
   <footer><% include ./partials/footer %></footer>
