@@ -8,7 +8,7 @@ const $ = require('jquery');
 const { prefecture_list, city_list, layout_list } = require('../tools/japan_data');
 const queryparser = require('../tools/queryparser');
 
-const NUM_PER_PAGE = 15;
+const NUM_PER_PAGE = 10;
 const result_suffix = "の物件";
 
 const search = (query, page, res) => {
@@ -18,15 +18,22 @@ const search = (query, page, res) => {
   const where = queryparser.getWhere(query);
   const attributes = [`title`, `url`, `layout`, `address`,
     `description`, `createdAt`, `updatedAt`];
-  mysql.findAll({attributes: attributes, where: where}, (error, response, body)=>{
-    const rooms = body.result;
-    console.log("findAll result:");
+  mysql.findAll({
+    attributes: attributes,
+    where: where,
+    offset: NUM_PER_PAGE * page,
+    limit: NUM_PER_PAGE,
+  },
+  (error, response, body)=>{
+    const rooms = body.result.rows;
+    const count = body.result.count;
     res.render('result', {
       title: query + result_suffix,
       results: rooms,
-      count: rooms.length,
+      count: count,
       query: query,
       page: page,
+      from: NUM_PER_PAGE * page + 1,
     });
   });
 };

@@ -11,7 +11,8 @@
       </div>
 
       <div class="container">
-        <p><%= query %> の物件は <%= count %> 件あります。0-<%= results.length %>件目</p>
+        <% const to = from + results.length - 1 %>
+        <p><%= query %> の物件は <%= count %> 件あります。<%= from %>-<%= to %>件目</p>
       </div>
 
       <div class="container" style="padding:0px;">
@@ -29,18 +30,19 @@
                 </li>
                 <li class="list-group-item">
                   <p class="result-address"><%= result.address %></p>
-                  <p class="result-text"><%= result.description %></p>
+                  <p class="result-text"><%= result.description.slice(0, 100) + "..." %></p>
                 </li>
               </ul>
             </div>
           </div>
         <% } %>
-
+        <% if (to != count) { %>
         <div class="paging result-board">
           <div class="panel panel-default unit">
-            <a class="btn btn-primary btn-block" href="?query=<%= query %>&page=<%= page+1 %>">次へ</a>
+            <a class="btn btn-primary btn-block" href="/?query=<%= query %>&page=<%= parseInt(page)+1 %>">次へ</a>
           </div>
         </div>
+        <% } %>
       </div>
     </main>
     <footer>
