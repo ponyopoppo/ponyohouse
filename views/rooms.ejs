@@ -21,7 +21,14 @@
       </div>
       <div>
         <h3>キーワードから検索</h3>
-
+        <% for (let i = 0; i < keyword_list.length; i++) { %>
+          <div class="col-md-2 col-sm-2 col-xs-4">
+            <% const keyword = keyword_list[i] %>
+            <p>
+              <a href="/keyword/<%= keyword %>"><%=keyword%></a>
+            </p>
+          </div>
+        <% } %>
       </div>
     </div>
   </main>

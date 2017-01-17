@@ -7,29 +7,32 @@
   <header><% include ./partials/header %></header>
   <main>
     <div class="container">
-      <h2><a href="/result/<%= prefecture %><%= result_suffix %>"><%= title %></a></h2>
+      <% const keywordstr = locals.keyword ? "-" + keyword : ""; %>
+      <h2><a href="/result/<%= prefecture %><%= keywordstr %><%= result_suffix %>"><%= title %></a></h2>
       <div class="row">
         <h3 class="col-md-12">市区町村を選択</h3>
         <% for (let i = 0; i < city_list.length; i++) { %>
           <div class="col-md-2 col-sm-2 col-xs-6">
             <% const city = city_list[i] %>
             <p>
-              <a href="/result/<%= prefecture %>-<%= city %><%= result_suffix %>"><%= city %> の物件</a>
+              <a href="/result/<%= prefecture %>-<%= city %><%= keywordstr %><%= result_suffix %>"><%= city %> の物件</a>
             </p>
           </div>
         <% } %>
       </div>
+      <!--
       <div class="row">
         <h3 class="col-md-12">最寄駅を選択</h3>
         <% for (let i = 0; i < city_list.length; i++) { %>
           <div class="col-md-2 col-sm-2 col-xs-6">
             <% const city = city_list[i] %>
             <p>
-              <a href="/result/<%= prefecture %>-<%= city %><%= result_suffix %>"><%= city %> の物件</a>
+              <a href="/result/<%= prefecture %>-<%= city %><%= keywordstr %><%= result_suffix %>"><%= city %> の物件</a>
             </p>
           </div>
         <% } %>
       </div>
+    -->
     </div>
   </main>
   <footer><% include ./partials/footer %></footer>

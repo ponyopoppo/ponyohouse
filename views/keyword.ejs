@@ -1,0 +1,26 @@
+<!-- views/prefecture.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head><% include ./partials/head %></head>
+<body>
+  <header><% include ./partials/header %></header>
+  <main>
+    <div class="container">
+      <h2><a href="/result/<%= keyword %><%= result_suffix %>"><%= title %></a></h2>
+      <div class="row">
+        <h3 class="col-md-12">都道府県を選択</h3>
+        <% for (let i = 0; i < prefecture_list.length; i++) { %>
+          <div class="col-md-2 col-sm-2 col-xs-6">
+            <% const prefecture = prefecture_list[i] %>
+            <p>
+              <a href="/prefecture/<%= keyword %>/<%= prefecture %>"><%= prefecture %></a>
+            </p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </main>
+  <footer><% include ./partials/footer %></footer>
+</body>
+</html>

@@ -1,45 +1,70 @@
 const { prefecture_list, city_list, layout_list } = require('./japan_data');
 
+const locationEqual = (query, location) => {
+  return query == location || query == location.slice(0, location.length - 1);
+}
+
 const getPrefecture = (query) => {
-  const lst = query.split(' ');
-  for (let i = 0; i < lst.length; i++) {
-    for (let j = 0; j < prefecture_list.length; j++) {
-      if (lst[i] == prefecture_list[j]) {
-        return prefecture_list[j];
-      }
+  for (let j = 0; j < prefecture_list.length; j++) {
+    if (locationEqual(query, prefecture_list[j])) {
+      return prefecture_list[j];
     }
   }
   return null;
 };
 
 const getCity = (query) => {
-  const lst = query.split(' ');
-  for (let i = 0; i < lst.length; i++) {
-    for (let p in city_list) {
-      const city = city_list[p];
-      for (let j = 0; j < city.length; j++) {
-        if (lst[i] == city[j]) {
-          return city[j];
-        }
+  for (let p in city_list) {
+    const city = city_list[p];
+    for (let j = 0; j < city.length; j++) {
+      if (locationEqual(query, city[j])) {
+        return city[j];
       }
     }
   }
   return null;
 };
 
+const getLayout = (query) => {
+  for (let i = 0; i < layout_list.length; i++) {
+    if (query == layout_list[i]) {
+      return layout_list[i];
+    }
+  }
+  return null;
+};
+
+const like = (str) => {
+  return {
+    description: {
+      $like: `%${str}%`,
+    }
+  };
+};
+
 const getWhere = (raw_query) => {
-  const query = raw_query.replace('　', ' ');
-  const prefecture = getPrefecture(query);
-  const city = getCity(query);
-
-  var where = {$and:{}};
-  if (prefecture != null) {
-    where.$and.prefecture = prefecture
+  const where = {
+    $and: raw_query
+    .replace('　', ' ')
+    .split(' ')
+    .map((query) => {
+      const prefecture = getPrefecture(query);
+      if (prefecture != null) {
+        return { prefecture: prefecture }
+      }
+      const city = getCity(query);
+      if (city != null) {
+        return { city: city }
+      }
+      const layout = getLayout(query);
+      if (layout != null) {
+        return { layout: layout }
+      }
+      return like(query);
+    })
   }
-  if (city != null) {
-    where.$and.city = city
-  }
 
+  console.log(JSON.stringify(where));
   return where;
 };
 
