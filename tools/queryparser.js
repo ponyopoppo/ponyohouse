@@ -45,8 +45,9 @@ const like = (str) => {
 const getWhere = (raw_query) => {
   const where = {
     $and: raw_query
-    .replace('　', ' ')
+    .split('　').join(' ')
     .split(' ')
+    .filter((query) => { return query != ''; })
     .map((query) => {
       const prefecture = getPrefecture(query);
       if (prefecture != null) {
